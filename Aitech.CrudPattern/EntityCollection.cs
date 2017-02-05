@@ -12,7 +12,7 @@ namespace AiTech.CrudPattern
     {
         //internal abstract void LoadItems();
 
-        private ICollection<TEntityName> ItemCollection;
+        protected ICollection<TEntityName> ItemCollection;
 
         public IEnumerable<TEntityName> Items { get; set; }
 
@@ -79,18 +79,18 @@ namespace AiTech.CrudPattern
             return ItemCollection.Where(r => r.RecordStatus == status);
         }
 
-        [Obsolete("Optional")]
-        public virtual bool LoadItemsFromDb()
-        {
-            return false;
-        }
+        //[Obsolete("Optional")]
+        //public virtual bool LoadItemsFromDb()
+        //{
+        //    return false;
+        //}
             
 
         /// <summary>
         /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
         /// </summary>
         /// <param name="items"></param>
-        internal void LoadItems(IEnumerable<TEntityName> items )
+        protected internal void LoadItems(IEnumerable<TEntityName> items )
         {
             ItemCollection.Clear();
             foreach (var item in items)

@@ -12,7 +12,7 @@ namespace AiTech.CrudPattern
     {
         //internal abstract void LoadItems();
 
-        protected ICollection<TEntityName> ItemCollection;
+        internal protected ICollection<TEntityName> ItemCollection;
 
         public IEnumerable<TEntityName> Items { get; set; }
 
@@ -74,7 +74,7 @@ namespace AiTech.CrudPattern
             Remove(item);           
         }
 
-        internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
+        protected internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
         {
             return ItemCollection.Where(r => r.RecordStatus == status);
         }
@@ -113,6 +113,15 @@ namespace AiTech.CrudPattern
                 item.ClearTrackingChanges();
                 item.RecordStatus = RecordStatus.NoChanges;
             }
+        }
+
+
+        /// <summary>
+        /// Clear all list and reset
+        /// </summary>
+        public void ClearAll()
+        {
+            ItemCollection.Clear();
         }
 
         public IEnumerable<TEntityName> GetItemsToBeSaved()

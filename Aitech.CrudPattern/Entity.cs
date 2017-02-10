@@ -21,9 +21,12 @@ namespace AiTech.CrudPattern
 
         
         public string CreatedBy { get; set; }
+
         public string ModifiedBy { get; set; }
+
         [Write(false)]
         public DateTime Created { get; set; }
+
         [Write(false)]
         public DateTime Modified { get; set; }
 

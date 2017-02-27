@@ -39,13 +39,7 @@ namespace AiTech.CrudPattern
             Changes = new Dictionary<string, object>();
         }
 
-        [Obsolete("use OnChanged(Values)")]
-        protected virtual void OnChanged()
-        {
-            if (Id != 0) RecordStatus = RecordStatus.ModifiedRecord;
-        }
-
-        
+               
         protected void OnChanged(dynamic value, [CallerMemberName] string caller = "")
         {
             if (Id != 0) RecordStatus = RecordStatus.ModifiedRecord;

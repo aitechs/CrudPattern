@@ -12,15 +12,25 @@ namespace AiTech.CrudPattern
     {
         //internal abstract void LoadItems();
 
-        internal protected ICollection<TEntityName> ItemCollection;
+        protected internal ICollection<TEntityName> ItemCollection;
 
         public IEnumerable<TEntityName> Items { get; set; }
+
+        /// <summary>
+        /// Use this to flag indicator if Items has been downloaded before from db
+        /// </summary>
+        public bool LoadFromCache { get; set; }
 
 
         public EntityCollection()
         {
             ItemCollection = new List<TEntityName>();
             Items = ItemCollection.Where(o => o.RecordStatus != RecordStatus.DeletedRecord);
+        }
+
+        public static EntityCollection<TEntityName> CreateInstance()
+        {
+            return (EntityCollection<TEntityName>)Activator.CreateInstance(typeof(EntityCollection<TEntityName>)); ;
         }
 
 
@@ -74,18 +84,12 @@ namespace AiTech.CrudPattern
             Remove(item);           
         }
 
-        protected internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
+        public IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
         {
             return ItemCollection.Where(r => r.RecordStatus == status);
         }
 
-        //[Obsolete("Optional")]
-        //public virtual bool LoadItemsFromDb()
-        //{
-        //    return false;
-        //}
-            
-
+       
         /// <summary>
         /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
         /// </summary>
@@ -124,7 +128,7 @@ namespace AiTech.CrudPattern
             ItemCollection.Clear();
         }
 
-        public IEnumerable<TEntityName> GetItemsToBeSaved()
+        public IEnumerable<TEntityName> GetDirtyItems()
         {
             return ItemCollection.Where(r => r.RecordStatus != RecordStatus.NoChanges);
         }

@@ -10,11 +10,12 @@ namespace AiTech.CrudPattern
     /// </summary>
     /// <typeparam name="TCollection">Entity Collection</typeparam>
     /// <typeparam name="TEntity">Entity</typeparam>
-    public abstract class Manager<TCollection,TEntity> 
-        where TCollection : EntityCollection<TEntity>
+    public abstract class Manager<TEntity> 
+        //where TCollection : EntityCollection<TEntity>
         where TEntity : Entity
     {
-        protected TCollection ItemCollection = null;
+
+        protected EntityCollection<TEntity> ItemCollection;
         
         protected string Encoder { get; set; }
 
@@ -23,6 +24,7 @@ namespace AiTech.CrudPattern
         public Manager(string encoder)
         {
             Encoder = encoder;
+            //ItemCollection = EntityCollection<TEntity>.CreateInstance();
             //if (ItemCollection == null)    throw new Exception("You must Set ItemCollection in Manager = <Manager.Collection>");
         } 
 

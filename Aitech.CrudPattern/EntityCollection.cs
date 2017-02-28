@@ -21,6 +21,7 @@ namespace AiTech.CrudPattern
         /// </summary>
         public bool LoadFromCache { get; set; }
 
+        
 
         public EntityCollection()
         {
@@ -30,7 +31,19 @@ namespace AiTech.CrudPattern
 
         public static EntityCollection<TEntityName> CreateInstance()
         {
-            return (EntityCollection<TEntityName>)Activator.CreateInstance(typeof(EntityCollection<TEntityName>)); ;
+            return (EntityCollection<TEntityName>)Activator.CreateInstance(typeof(EntityCollection<TEntityName>)); 
+        }
+
+
+        public void CopyTo<TCollection>(TCollection destination) where TCollection:EntityCollection<TEntityName>
+        {
+            destination.ItemCollection.Clear();
+            foreach (var item in this.ItemCollection)
+            {
+                TEntityName newItem = (TEntityName)Activator.CreateInstance(typeof(TEntityName));
+                item.CopyTo<TEntityName>(ref newItem);
+                destination.ItemCollection.Add(newItem);
+            }
         }
 
 

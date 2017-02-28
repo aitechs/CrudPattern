@@ -8,6 +8,24 @@ namespace AiTech.CrudPattern.Tests
     public class SampleEntity : Entity
     {
         public string Name { get; set; }
+
+        public override void CopyTo<TEntity>(ref TEntity destination) 
+        {
+            base.CopyTo(ref destination);
+
+            (destination as SampleEntity).Histories = new HistoryCollection();
+            this.Histories.CopyTo<HistoryCollection>((destination as SampleEntity).Histories);
+
+        }
+
+
+        
+        public HistoryCollection Histories { get; set; }
+
+        public SampleEntity()
+        {
+            Histories = new HistoryCollection();
+        }
     }
 
     public class SampleEntityCollection : EntityCollection<SampleEntity>
@@ -45,5 +63,21 @@ namespace AiTech.CrudPattern.Tests
 
             return true;
         }
+    }
+
+
+    public class History:Entity
+    {
+        public string Batch { get; set; }
+
+        public void CopyTo(ref History destination)
+        {
+            destination = (History)MemberwiseClone();
+        }
+    }
+
+    public class HistoryCollection : EntityCollection<History>
+    {
+        
     }
 }

@@ -39,7 +39,12 @@ namespace AiTech.CrudPattern
             Changes = new Dictionary<string, object>();
         }
 
-               
+
+        public virtual void CopyTo<TEntity>(ref TEntity destination) where TEntity : Entity
+        {
+            destination = (TEntity)MemberwiseClone();
+        }
+
         protected void OnChanged(dynamic value, [CallerMemberName] string caller = "")
         {
             if (Id != 0) RecordStatus = RecordStatus.ModifiedRecord;

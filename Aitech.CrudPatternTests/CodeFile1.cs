@@ -41,19 +41,7 @@ namespace AiTech.CrudPattern.Tests
             ItemCollection = new SampleEntityCollection();
         }
 
-        public void AttachRange(IEnumerable<SampleEntity> items)
-        {
-            Assert.IsNotNull(ItemCollection, "ItemCollection is NULL");
-            ItemCollection.AttachRange(items);
-        }
-
-        public void Attach(SampleEntity item)
-        {
-            Assert.IsNotNull(ItemCollection);
-
-            ItemCollection.Attach(item);
-        }
-
+       
         public override bool SaveChanges()
         {
             var inserted = ItemCollection.GetItemsWithStatus(RecordStatus.NewRecord);

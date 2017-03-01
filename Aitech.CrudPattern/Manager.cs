@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using Dapper.Contrib.Extensions;
 using Dapper;
+using System.Collections.Generic;
 
 namespace AiTech.CrudPattern
 {
@@ -97,5 +98,16 @@ namespace AiTech.CrudPattern
                 throw;
             }
         }
+
+        public void Attach(TEntity item)
+        {
+            ItemCollection.Attach(item);
+        }
+
+        public void AttachRange(IEnumerable<TEntity> items)
+        {
+            ItemCollection.AttachRange(items);
+        }
+
     }
 }

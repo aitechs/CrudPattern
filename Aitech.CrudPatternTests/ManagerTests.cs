@@ -15,7 +15,7 @@ namespace AiTech.CrudPattern.Tests
         public void TestClone()
         {
             var entity = new SampleEntity();
-
+            
             entity.Name = "Name1";
             entity.Id = 123;
             entity.RecordStatus = RecordStatus.NewRecord;
@@ -36,16 +36,21 @@ namespace AiTech.CrudPattern.Tests
 
 
             Assert.AreNotSame(clone.Histories, entity.Histories,"The same");
+            var originalHistories = entity.Histories;
 
-            entity.CopyTo<SampleEntity>(ref clone);
+            entity.CopyTo(ref clone);
+
+            Assert.AreSame(originalHistories, entity.Histories);
 
             Assert.AreNotSame(entity, clone);
             Assert.AreEqual(entity.Id, clone.Id, "NOt Equal ID");
             Assert.AreEqual(entity.Modified, clone.Modified, "NOT EQUAL TOken");
             Assert.AreEqual(entity.Token, clone.Token, "NOT EQUAL TOken");
 
+            Assert.AreEqual(1, clone.Histories.Items.Count(),"Not same size");
 
             Assert.AreNotSame(clone.Histories, entity.Histories, "Histories are the same");
+
 
             Assert.AreNotSame(clone.Histories.Items.ElementAt(0), entity.Histories.Items.ElementAt(0));
 

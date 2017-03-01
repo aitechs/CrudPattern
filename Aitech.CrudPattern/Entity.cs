@@ -40,7 +40,7 @@ namespace AiTech.CrudPattern
         }
 
 
-        public virtual void CopyTo<TEntity>(ref TEntity destination) where TEntity : Entity
+        internal protected virtual void CopyTo<TEntity>(ref TEntity destination) where TEntity : Entity
         {
             destination = (TEntity)MemberwiseClone();
         }

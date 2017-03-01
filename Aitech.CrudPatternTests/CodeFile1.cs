@@ -9,15 +9,13 @@ namespace AiTech.CrudPattern.Tests
     {
         public string Name { get; set; }
 
-        public override void CopyTo<TEntity>(ref TEntity destination) 
+        public void CopyTo(ref SampleEntity destination)
         {
-            base.CopyTo(ref destination);
+            base.CopyTo<SampleEntity>(ref destination);
 
-            (destination as SampleEntity).Histories = new HistoryCollection();
-            this.Histories.CopyTo<HistoryCollection>((destination as SampleEntity).Histories);
-
+            destination.Histories = new HistoryCollection();
+            this.Histories.CopyTo<HistoryCollection>(destination.Histories);
         }
-
 
         
         public HistoryCollection Histories { get; set; }

@@ -10,8 +10,6 @@ namespace AiTech.CrudPattern
     /// <typeparam name="TEntityName">Name of the Entity inside Collection</typeparam>
     public abstract class EntityCollection<TEntityName> where TEntityName : Entity
     {
-        //internal abstract void LoadItems();
-
         protected internal ICollection<TEntityName> ItemCollection;
 
         public IEnumerable<TEntityName> Items { get; set; }
@@ -36,7 +34,7 @@ namespace AiTech.CrudPattern
 
 
         public void CopyTo<TCollection>(TCollection destination) where TCollection:EntityCollection<TEntityName>
-        {
+        {            
             destination.ItemCollection.Clear();
             foreach (var item in this.ItemCollection)
             {

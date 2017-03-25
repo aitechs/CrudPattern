@@ -34,7 +34,7 @@ namespace AiTech.CrudPattern
             //
             // DELETE ITEMS
             //
-            var deletedItems = ItemCollection.GetItemsWithStatus(RecordStatus.DeletedRecord);
+            var deletedItems = ItemCollection.GetItemsWithStatus(Aitech.CrudPattern.RecordStatus.DeletedRecord);
             var retVal = 0;
             foreach (var item in deletedItems)
             {
@@ -52,7 +52,7 @@ namespace AiTech.CrudPattern
         {
             try
             {
-                var newItems = ItemCollection.GetItemsWithStatus(RecordStatus.NewRecord);
+                var newItems = ItemCollection.GetItemsWithStatus(Aitech.CrudPattern.RecordStatus.NewRecord);
                 var result = 0;
                 foreach (var item in newItems)
                 {
@@ -77,7 +77,7 @@ namespace AiTech.CrudPattern
 
         protected virtual int ExecuteUpdateQuery(SqlConnection db)
         {
-            var modifiedItems = ItemCollection.GetItemsWithStatus(RecordStatus.ModifiedRecord);
+            var modifiedItems = ItemCollection.GetItemsWithStatus(Aitech.CrudPattern.RecordStatus.ModifiedRecord);
             try
             {
                 var result = 0;

@@ -44,8 +44,8 @@ namespace AiTech.CrudPattern.Tests
        
         public override bool SaveChanges()
         {
-            var inserted = ItemCollection.GetItemsWithStatus(RecordStatus.NewRecord);
-            Assert.AreEqual(ItemCollection.Items.ElementAt(0).Name, inserted.ElementAt(0).Name);
+            //var inserted = ItemCollection.GetDirtyItems();
+            //Assert.AreEqual(ItemCollection.Items.ElementAt(0).Name, inserted.ElementAt(0).Name);
 
             return true;
         }

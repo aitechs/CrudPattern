@@ -18,7 +18,7 @@ namespace AiTech.CrudPattern.Tests
             
             entity.Name = "Name1";
             entity.Id = 123;
-            entity.RecordStatus = RecordStatus.NewRecord;
+            entity.RecordStatus = Aitech.CrudPattern.RecordStatus.NewRecord;
             entity.Modified = new DateTime(2017, 01, 01);
             entity.Created = new DateTime(2010, 10, 10);
             entity.CreatedBy = "New Encoder";

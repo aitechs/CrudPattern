@@ -3,6 +3,7 @@ using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Linq;
+using Aitech.CrudPattern;
 
 namespace AiTech.CrudPattern
 {
@@ -19,14 +20,14 @@ namespace AiTech.CrudPattern
         [Computed]
         protected IDictionary<string, object> Changes { get; private set; }
 
-        
+        [Write(false)]
+        protected internal bool IsNewRecord { get; set; }
+
+
         public string CreatedBy { get; set; }
-
         public string ModifiedBy { get; set; }
-
         [Write(false)]
         public DateTime Created { get; set; }
-
         [Write(false)]
         public DateTime Modified { get; set; }
 
@@ -37,17 +38,17 @@ namespace AiTech.CrudPattern
             RecordStatus = RecordStatus.NoChanges;
 
             Changes = new Dictionary<string, object>();
-        }
 
-
-        internal protected virtual void CopyTo<TEntity>(ref TEntity destination) where TEntity : Entity
-        {
-            destination = (TEntity)MemberwiseClone();
+            TableName = GetTableName();
+            PrimaryKey = GetPrimaryKey();
         }
 
         protected void OnChanged(dynamic value, [CallerMemberName] string caller = "")
         {
-            if (Id != 0) RecordStatus = RecordStatus.ModifiedRecord;
+            if (Id != 0)
+            {
+                RecordStatus = RecordStatus.ModifiedRecord;
+            }
 
             if (Changes.ContainsKey(caller))
                 Changes[caller] = value;
@@ -58,9 +59,14 @@ namespace AiTech.CrudPattern
 
         public void ClearTrackingChanges()
         {
-            Changes = new Dictionary<string, object>();
+            Changes.Clear();
         }
 
+        public void ClearStatusAndTrackingChanges()
+        {
+            RecordStatus = RecordStatus.NoChanges;
+            Changes.Clear();
+        }
 
         internal string GetUpdateSQLQuery()
         {
@@ -75,12 +81,13 @@ namespace AiTech.CrudPattern
 
             //Add the modified
             sql += " Modified = GetDate()";
-            sql += " WHERE Id = @Id";
+            sql += $" WHERE {PrimaryKey} = @Id";
 
             return sql;
         }
 
 
+        protected internal string TableName;
         /// <summary>
         /// Get The Table Name from Entity
         /// </summary>
@@ -92,6 +99,22 @@ namespace AiTech.CrudPattern
                 return this.GetType().Name;
 
             return tableNameAttribute.Name;
+        }
+
+
+        protected internal string PrimaryKey;
+        private string GetPrimaryKey()
+        {
+            var keyAttribute = this.GetType().GetProperties().Where(prop => Attribute.IsDefined(prop, typeof(KeyAttribute))).FirstOrDefault();
+            if (keyAttribute == null)
+                return "Id";
+
+            return keyAttribute.Name;
+        }
+
+        internal protected virtual void CopyTo<TEntity>(ref TEntity destination) where TEntity : Entity
+        {
+            destination = (TEntity)MemberwiseClone();
         }
 
     }

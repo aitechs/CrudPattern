@@ -54,16 +54,31 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeFile.cs" />
+    <Compile Include="Copier.cs" />
+    <Compile Include="DbManager.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityCollection.cs" />
     <Compile Include="Manager.cs" />
-    <Compile Include="ManyToManyCollection.cs" />
-    <Compile Include="ManyToManyEntity.cs" />
-    <Compile Include="ManyToManyManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryManager.cs" />
+    <Compile Include="RecordStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EntityGenerator\Generator_Entity.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Generator_Entity.txt</LastGenOutput>
+    </Content>
+    <Content Include="EntityGenerator\Generator_Entity.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Generator_Entity.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

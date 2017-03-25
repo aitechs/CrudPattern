@@ -1,15 +1,15 @@
-﻿namespace AiTech.CrudPattern
+﻿namespace Aitech.CrudPattern
 {
-    public enum RecordStatus
-    {
-        NewRecord,
-        ModifiedRecord,
-        DeletedRecord,
-        NoChanges
-    }
 
     public interface IRecordStatus
     {
-        RecordStatus RecordStatus { get; set; }        
+        RecordStatus RecordStatus { get; set; }
+    }
+
+    public interface ITransaction
+    {
+        void BeginTransaction();
+        void CommitTransaction();
+        void RollBackTransaction();
     }
 }

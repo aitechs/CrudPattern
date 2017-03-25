@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26206.0
+VisualStudioVersion = 15.0.26228.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aitech.CrudPattern", "Aitech.CrudPattern\Aitech.CrudPattern.csproj", "{69A7D69A-B04B-46CE-868C-4B06DE21BEBA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aitech.CrudPatternTests", "Aitech.CrudPatternTests\Aitech.CrudPatternTests.csproj", "{722B6A00-4432-4A3B-962B-5F57D6F82F8E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{2894CC2A-AC3A-4532-AFAE-3684F2EEE5EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{722B6A00-4432-4A3B-962B-5F57D6F82F8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{722B6A00-4432-4A3B-962B-5F57D6F82F8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{722B6A00-4432-4A3B-962B-5F57D6F82F8E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2894CC2A-AC3A-4532-AFAE-3684F2EEE5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2894CC2A-AC3A-4532-AFAE-3684F2EEE5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2894CC2A-AC3A-4532-AFAE-3684F2EEE5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2894CC2A-AC3A-4532-AFAE-3684F2EEE5EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

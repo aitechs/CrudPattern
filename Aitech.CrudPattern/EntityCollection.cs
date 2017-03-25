@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aitech.CrudPattern;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,40 +9,17 @@ namespace AiTech.CrudPattern
     /// 
     /// </summary>
     /// <typeparam name="TEntityName">Name of the Entity inside Collection</typeparam>
+    [Serializable]
     public abstract class EntityCollection<TEntityName> where TEntityName : Entity
     {
         protected internal ICollection<TEntityName> ItemCollection;
 
         public IEnumerable<TEntityName> Items { get; set; }
 
-        /// <summary>
-        /// Use this to flag indicator if Items has been downloaded before from db
-        /// </summary>
-        public bool LoadFromCache { get; set; }
-
-        
-
         public EntityCollection()
         {
             ItemCollection = new List<TEntityName>();
             Items = ItemCollection.Where(o => o.RecordStatus != RecordStatus.DeletedRecord);
-        }
-
-        public static EntityCollection<TEntityName> CreateInstance()
-        {
-            return (EntityCollection<TEntityName>)Activator.CreateInstance(typeof(EntityCollection<TEntityName>)); 
-        }
-
-
-        public void CopyTo<TCollection>(TCollection destination) where TCollection:EntityCollection<TEntityName>
-        {            
-            destination.ItemCollection.Clear();
-            foreach (var item in this.ItemCollection)
-            {
-                TEntityName newItem = (TEntityName)Activator.CreateInstance(typeof(TEntityName));
-                item.CopyTo<TEntityName>(ref newItem);
-                destination.ItemCollection.Add(newItem);
-            }
         }
 
 
@@ -62,14 +40,15 @@ namespace AiTech.CrudPattern
 
         public virtual void Attach(TEntityName item)
         {
-            //if (item.Id != 0) item.RecordStatus = RecordStatus.ModifiedRecord;
             ItemCollection.Add(item);
         }
 
         public virtual void AttachRange(IEnumerable<TEntityName> items)
         {
             foreach (var item in items)
+            {
                 Attach(item);
+            }
         }
 
         public virtual void Remove(TEntityName item)
@@ -82,30 +61,45 @@ namespace AiTech.CrudPattern
             }
 
             //Find the User
-            var foundItem = ItemCollection.FirstOrDefault(o => o.Id == item.Id  ||   o.Token == item.Token);
+            var foundItem = ItemCollection.FirstOrDefault(o => o.Id == item.Id || o.Token == item.Token);
             if (foundItem == null) throw new Exception("Record Not Found");
-            
+
             foundItem.RecordStatus = RecordStatus.DeletedRecord;
+        }
+
+        public virtual void RemoveAll()
+        {
+            for (var i = ItemCollection.Count - 1; i >= 0; i--)
+            {
+                var item = ItemCollection.ElementAt(i);
+                if (item.Id == 0)
+                {
+                    ItemCollection.Remove(item);
+                    continue;
+                }
+
+                item.RecordStatus = RecordStatus.DeletedRecord;
+            }
+
         }
 
         public virtual void Remove(int index)
         {
             var item = ItemCollection.ElementAt(index);
             if (item == null) return;
-            Remove(item);           
+            Remove(item);
         }
 
-        public IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
+        internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
         {
             return ItemCollection.Where(r => r.RecordStatus == status);
         }
 
-       
         /// <summary>
         /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
         /// </summary>
         /// <param name="items"></param>
-        protected internal void LoadItems(IEnumerable<TEntityName> items )
+        internal void LoadItems(IEnumerable<TEntityName> items)
         {
             ItemCollection.Clear();
             foreach (var item in items)
@@ -121,28 +115,47 @@ namespace AiTech.CrudPattern
         /// Call Item.ClearTrackingChanges() 
         ///      RecordStatus = NoChanges
         /// </summary>
-        public void ClearTrackingChanges()
+        public void ClearStatusAndTrackingChanges()
         {
             foreach (var item in ItemCollection)
             {
-                item.ClearTrackingChanges();
-                item.RecordStatus = RecordStatus.NoChanges;
+                item.ClearStatusAndTrackingChanges();
             }
         }
 
 
-        /// <summary>
-        /// Clear all list and reset
-        /// </summary>
-        public void ClearAll()
+        public void CommitChanges()
         {
-            ItemCollection.Clear();
+            var deletedItems = ItemCollection.Where(o => o.RecordStatus == RecordStatus.DeletedRecord).ToList();
+            foreach (var item in deletedItems)
+                ItemCollection.Remove(item);
+
+            ClearStatusAndTrackingChanges();
         }
+
 
         public IEnumerable<TEntityName> GetDirtyItems()
         {
             return ItemCollection.Where(r => r.RecordStatus != RecordStatus.NoChanges);
         }
+
+        /// <summary>
+        /// Set this one to FALSE to if you want to fetch from db
+        /// </summary>
+        public bool ReadFromCache { get; set; }
+
+
+        public void CopyTo<TCollection>(TCollection destination) where TCollection : EntityCollection<TEntityName>
+        {
+            destination.ItemCollection.Clear();
+            foreach (var item in this.ItemCollection)
+            {
+                TEntityName newItem = (TEntityName)Activator.CreateInstance(typeof(TEntityName));
+                item.CopyTo<TEntityName>(ref newItem);
+                destination.ItemCollection.Add(newItem);
+            }
+        }
+
 
     }
 }

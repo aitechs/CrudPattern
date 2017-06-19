@@ -1,5 +1,4 @@
-﻿using AiTech.CrudPattern;
-using Dapper;
+﻿using Dapper;
 using Dapper.Contrib.Extensions;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aitech.CrudPattern
+namespace AiTech.CrudPattern
 {
 
 
@@ -69,11 +68,11 @@ namespace Aitech.CrudPattern
             }
 
             var resultSuccess = false;
-            foreach (var item in RecordItemCollection.ItemCollection.OrderBy(_ => _.RecordStatus))
+            foreach (var item in RecordItemCollection.ItemCollection.OrderBy(_ => _.RowStatus))
             {
                 try
                 {
-                    switch (item.RecordStatus)
+                    switch (item.RowStatus)
                     {
                         case RecordStatus.DeletedRecord:
                             resultSuccess = ExecuteDeleteQuery(item, DbConnection, DbTransaction);
@@ -195,7 +194,7 @@ namespace Aitech.CrudPattern
         {
             if (RecordItemCollection == null) return;
             
-            var newItems = RecordItemCollection.ItemCollection.Where(_ => _.RecordStatus == RecordStatus.NewRecord);
+            var newItems = RecordItemCollection.ItemCollection.Where(_ => _.RowStatus == RecordStatus.NewRecord);
             foreach (var item in newItems)
                 item.IsNewRecord = true;
         }
@@ -203,7 +202,7 @@ namespace Aitech.CrudPattern
 
         public void CommitTransaction()
         {
-            var deletedItems = RecordItemCollection.ItemCollection.Where(o => o.RecordStatus == RecordStatus.DeletedRecord).ToList();
+            var deletedItems = RecordItemCollection.ItemCollection.Where(o => o.RowStatus == RecordStatus.DeletedRecord).ToList();
             foreach (var item in deletedItems)
                 RecordItemCollection.ItemCollection.Remove(item);
 

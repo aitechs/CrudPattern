@@ -1,4 +1,4 @@
-﻿namespace Aitech.CrudPattern
+﻿namespace AiTech.CrudPattern
 {
 
     public interface IRecordStatus

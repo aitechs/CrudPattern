@@ -7,10 +7,11 @@
     <ProjectGuid>{69A7D69A-B04B-46CE-868C-4B06DE21BEBA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Aitech.CrudPattern</RootNamespace>
-    <AssemblyName>Aitech.CrudPattern</AssemblyName>
+    <RootNamespace>AiTech.CrudPattern</RootNamespace>
+    <AssemblyName>AiTech.CrudPattern</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AssemblyVersion>1.1.2.14</AssemblyVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,12 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyFileVersionSettings>None.None.None.Increment</AssemblyFileVersionSettings>
+    <PrimaryVersionType>AssemblyFileVersionAttribute</PrimaryVersionType>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +39,12 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <PrimaryVersionType>AssemblyFileVersionAttribute</PrimaryVersionType>
+    <AssemblyInfoFilePath>Properties\AssemblyInfo.cs</AssemblyInfoFilePath>
+    <UpdateAssemblyVersion>False</UpdateAssemblyVersion>
+    <UpdateAssemblyFileVersion>True</UpdateAssemblyFileVersion>
+    <UpdateAssemblyInfoVersion>False</UpdateAssemblyInfoVersion>
+    <AssemblyFileVersionSettings>IncrementOnDemand.IncrementOnDemand.Increment.Increment</AssemblyFileVersionSettings>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,24 +67,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeFile.cs" />
-    <Compile Include="Copier.cs" />
+    <Compile Include="Unused\Copier.cs" />
+    <Compile Include="DbAction.cs" />
     <Compile Include="DbManager.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityCollection.cs" />
-    <Compile Include="Manager.cs" />
+    <Compile Include="Unused\Manager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryManager.cs" />
+    <Compile Include="Unused\QueryManager.cs" />
     <Compile Include="RecordStatus.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EntityGenerator\Generator_Entity.tt">
+    <Content Include="EntityGenerator\Generator_Entity.v.2.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Generator_Entity.txt</LastGenOutput>
+      <LastGenOutput>Generator_Entity.v.2.txt</LastGenOutput>
     </Content>
-    <Content Include="EntityGenerator\Generator_Entity.txt">
+    <Content Include="EntityGenerator\Generator_Entity.v.1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Generator_Entity.v.1.txt</LastGenOutput>
+    </Content>
+    <Content Include="EntityGenerator\Generator_Entity.v.1.txt">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Generator_Entity.tt</DependentUpon>
+      <DependentUpon>Generator_Entity.v.1.tt</DependentUpon>
+    </Content>
+    <Content Include="EntityGenerator\Generator_Entity.v.2.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Generator_Entity.v.2.tt</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>

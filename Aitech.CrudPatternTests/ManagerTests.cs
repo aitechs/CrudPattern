@@ -18,7 +18,7 @@ namespace AiTech.CrudPattern.Tests
             
             entity.Name = "Name1";
             entity.Id = 123;
-            entity.RecordStatus = Aitech.CrudPattern.RecordStatus.NewRecord;
+            entity.RowStatus = Aitech.CrudPattern.RecordStatus.NewRecord;
             entity.Modified = new DateTime(2017, 01, 01);
             entity.Created = new DateTime(2010, 10, 10);
             entity.CreatedBy = "New Encoder";
@@ -45,7 +45,7 @@ namespace AiTech.CrudPattern.Tests
             Assert.AreNotSame(entity, clone);
             Assert.AreEqual(entity.Id, clone.Id, "NOt Equal ID");
             Assert.AreEqual(entity.Modified, clone.Modified, "NOT EQUAL TOken");
-            Assert.AreEqual(entity.Token, clone.Token, "NOT EQUAL TOken");
+            Assert.AreEqual(entity.RowId, clone.RowId, "NOT EQUAL TOken");
 
             Assert.AreEqual(1, clone.Histories.Items.Count(),"Not same size");
 
@@ -58,8 +58,8 @@ namespace AiTech.CrudPattern.Tests
             var clone1 = clone.Histories.Items.ElementAt(0);
             // Assert.AreEqual(clone.Histories.Items.ElementAt(0), entity.Histories.Items.ElementAt(0),"Error");
 
-            Assert.AreEqual(node1.Token, clone1.Token);
-            Assert.AreEqual(node1.RecordStatus, clone1.RecordStatus);
+            Assert.AreEqual(node1.RowId, clone1.RowId);
+            Assert.AreEqual(node1.RowStatus, clone1.RowStatus);
         }
 
         [TestMethod()]

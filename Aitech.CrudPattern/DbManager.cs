@@ -1,9 +1,8 @@
-﻿using AiTech.CrudPattern;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace Aitech.CrudPattern
+namespace AiTech.CrudPattern
 {
     public abstract class DbManager<T> where T:Entity
     {

@@ -3,7 +3,7 @@ using Dapper.Contrib.Extensions;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Linq;
-using Aitech.CrudPattern;
+using AiTech.CrudPattern;
 
 namespace AiTech.CrudPattern
 {
@@ -12,10 +12,10 @@ namespace AiTech.CrudPattern
         public int Id { get; set; }
 
         [Write(false)]
-        public string Token { get; set; }
+        public string RowId { get; set; }
 
         [Write(false)]
-        public RecordStatus RecordStatus { get; set; }
+        public RecordStatus RowStatus { get; set; }
 
         [Computed]
         protected IDictionary<string, object> Changes { get; private set; }
@@ -34,8 +34,8 @@ namespace AiTech.CrudPattern
 
         public Entity()
         {
-            Token = Guid.NewGuid().ToString();
-            RecordStatus = RecordStatus.NoChanges;
+            RowId = Guid.NewGuid().ToString();
+            RowStatus = RecordStatus.NoChanges;
 
             Changes = new Dictionary<string, object>();
 
@@ -47,7 +47,7 @@ namespace AiTech.CrudPattern
         {
             if (Id != 0)
             {
-                RecordStatus = RecordStatus.ModifiedRecord;
+                RowStatus = RecordStatus.ModifiedRecord;
             }
 
             if (Changes.ContainsKey(caller))
@@ -64,7 +64,7 @@ namespace AiTech.CrudPattern
 
         public void ClearStatusAndTrackingChanges()
         {
-            RecordStatus = RecordStatus.NoChanges;
+            RowStatus = RecordStatus.NoChanges;
             Changes.Clear();
         }
 

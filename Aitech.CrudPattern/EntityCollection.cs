@@ -1,5 +1,4 @@
-﻿using Aitech.CrudPattern;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,16 +18,16 @@ namespace AiTech.CrudPattern
         public EntityCollection()
         {
             ItemCollection = new List<TEntityName>();
-            Items = ItemCollection.Where(o => o.RecordStatus != RecordStatus.DeletedRecord);
+            Items = ItemCollection.Where(o => o.RowStatus != RecordStatus.DeletedRecord);
         }
 
 
         public virtual void Add(TEntityName item)
         {
-            var itemFound = ItemCollection.FirstOrDefault(x => x.Token == item.Token);
+            var itemFound = ItemCollection.FirstOrDefault(x => x.RowId == item.RowId);
             if (itemFound != null) throw new Exception("Record Already Exists");
 
-            item.RecordStatus = RecordStatus.NewRecord;
+            item.RowStatus = RecordStatus.NewRecord;
             ItemCollection.Add(item);
         }
 
@@ -46,9 +45,7 @@ namespace AiTech.CrudPattern
         public virtual void AttachRange(IEnumerable<TEntityName> items)
         {
             foreach (var item in items)
-            {
                 Attach(item);
-            }
         }
 
         public virtual void Remove(TEntityName item)
@@ -61,10 +58,10 @@ namespace AiTech.CrudPattern
             }
 
             //Find the User
-            var foundItem = ItemCollection.FirstOrDefault(o => o.Id == item.Id || o.Token == item.Token);
+            var foundItem = ItemCollection.FirstOrDefault(o => o.Id == item.Id || o.RowId == item.RowId);
             if (foundItem == null) throw new Exception("Record Not Found");
 
-            foundItem.RecordStatus = RecordStatus.DeletedRecord;
+            foundItem.RowStatus = RecordStatus.DeletedRecord;
         }
 
         public virtual void RemoveAll()
@@ -78,7 +75,7 @@ namespace AiTech.CrudPattern
                     continue;
                 }
 
-                item.RecordStatus = RecordStatus.DeletedRecord;
+                item.RowStatus = RecordStatus.DeletedRecord;
             }
 
         }
@@ -92,7 +89,7 @@ namespace AiTech.CrudPattern
 
         internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
         {
-            return ItemCollection.Where(r => r.RecordStatus == status);
+            return ItemCollection.Where(r => r.RowStatus == status);
         }
 
         /// <summary>
@@ -104,7 +101,7 @@ namespace AiTech.CrudPattern
             ItemCollection.Clear();
             foreach (var item in items)
             {
-                item.RecordStatus = RecordStatus.NoChanges;
+                item.RowStatus = RecordStatus.NoChanges;
                 item.ClearTrackingChanges();
                 ItemCollection.Add(item);
             }
@@ -126,7 +123,7 @@ namespace AiTech.CrudPattern
 
         public void CommitChanges()
         {
-            var deletedItems = ItemCollection.Where(o => o.RecordStatus == RecordStatus.DeletedRecord).ToList();
+            var deletedItems = ItemCollection.Where(o => o.RowStatus == RecordStatus.DeletedRecord).ToList();
             foreach (var item in deletedItems)
                 ItemCollection.Remove(item);
 
@@ -136,7 +133,7 @@ namespace AiTech.CrudPattern
 
         public IEnumerable<TEntityName> GetDirtyItems()
         {
-            return ItemCollection.Where(r => r.RecordStatus != RecordStatus.NoChanges);
+            return ItemCollection.Where(r => r.RowStatus != RecordStatus.NoChanges);
         }
 
         /// <summary>
@@ -155,6 +152,7 @@ namespace AiTech.CrudPattern
                 destination.ItemCollection.Add(newItem);
             }
         }
+
 
 
     }

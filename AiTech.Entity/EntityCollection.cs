@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AiTech.CrudPattern
+namespace AiTech.LiteOrm
 {
     /// <summary>
     /// 
@@ -18,7 +18,7 @@ namespace AiTech.CrudPattern
         public EntityCollection()
         {
             ItemCollection = new List<TEntityName>();
-            Items = ItemCollection.Where(o => o.RowStatus != RecordStatus.DeletedRecord);
+            Items = ItemCollection.AsEnumerable(); //.Where(o => o.RowStatus != RecordStatus.DeletedRecord);
         }
 
 
@@ -87,72 +87,54 @@ namespace AiTech.CrudPattern
             Remove(item);
         }
 
-        internal IEnumerable<TEntityName> GetItemsWithStatus(RecordStatus status)
-        {
-            return ItemCollection.Where(r => r.RowStatus == status);
-        }
-
-        /// <summary>
-        /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
-        /// </summary>
-        /// <param name="items"></param>
-        internal void LoadItems(IEnumerable<TEntityName> items)
-        {
-            ItemCollection.Clear();
-            foreach (var item in items)
-            {
-                item.RowStatus = RecordStatus.NoChanges;
-                item.ClearTrackingChanges();
-                ItemCollection.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Clear Status of All Items.
-        /// Call Item.ClearTrackingChanges() 
-        ///      RecordStatus = NoChanges
-        /// </summary>
-        public void ClearStatusAndTrackingChanges()
-        {
-            foreach (var item in ItemCollection)
-            {
-                item.ClearStatusAndTrackingChanges();
-            }
-        }
-
-
         public void CommitChanges()
         {
             var deletedItems = ItemCollection.Where(o => o.RowStatus == RecordStatus.DeletedRecord).ToList();
             foreach (var item in deletedItems)
                 ItemCollection.Remove(item);
 
-            ClearStatusAndTrackingChanges();
+            foreach (var item in ItemCollection)
+            {
+                item.RowStatus = RecordStatus.NoChanges;
+                item.StartTrackingChanges();
+            }
         }
+
+        public void RollbackChanges()
+        {
+            foreach (var item in ItemCollection)
+            {
+                if (item.RowStatus == RecordStatus.NewRecord) item.Id = 0;
+            }
+        }
+
+
+        /// <summary>
+        /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
+        /// </summary>
+        /// <param name="items"></param>
+        protected internal void LoadItemsWith(IEnumerable<TEntityName> items)
+        {
+            ItemCollection.Clear();
+            foreach (var item in items)
+            {
+                item.RowStatus = RecordStatus.NoChanges;
+                item.StartTrackingChanges();
+                ItemCollection.Add(item);
+            }
+        }
+
+
+        /// <summary>
+        /// Switch to check if previously loaded from Database
+        /// </summary>
+        public bool HasReadFromDb { get; protected set; }
 
 
         public IEnumerable<TEntityName> GetDirtyItems()
         {
             return ItemCollection.Where(r => r.RowStatus != RecordStatus.NoChanges);
         }
-
-        /// <summary>
-        /// Set this one to FALSE to if you want to fetch from db
-        /// </summary>
-        public bool ReadFromCache { get; set; }
-
-
-        public void CopyTo<TCollection>(TCollection destination) where TCollection : EntityCollection<TEntityName>
-        {
-            destination.ItemCollection.Clear();
-            foreach (var item in this.ItemCollection)
-            {
-                TEntityName newItem = (TEntityName)Activator.CreateInstance(typeof(TEntityName));
-                item.CopyTo<TEntityName>(ref newItem);
-                destination.ItemCollection.Add(newItem);
-            }
-        }
-
 
 
     }

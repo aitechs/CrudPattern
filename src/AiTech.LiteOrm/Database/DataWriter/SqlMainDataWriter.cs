@@ -11,7 +11,7 @@ namespace AiTech.LiteOrm.Database
         public SqlMainDataWriter(string username, TEntityCollection items) : base(username, items) { }
 
 
-        public abstract bool SaveChanges();
+
 
         protected virtual void CommitChanges()
         {
@@ -23,11 +23,13 @@ namespace AiTech.LiteOrm.Database
             _List.RollbackChanges();
         }
 
+        public virtual bool SaveChanges()
+        {
+            return Write(_ => "item");
+        }
 
         protected bool Write(Expression<Func<TEntity, string>> ErrorDescription)
         {
-            var success = false;
-
             using (var db = Connection.CreateConnection())
             {
                 try
@@ -45,7 +47,7 @@ namespace AiTech.LiteOrm.Database
                 try
                 {
 
-                    success = Write(ErrorDescription, db, trn);
+                    var success = Write(ErrorDescription, db, trn);
 
                     trn.Commit();
 

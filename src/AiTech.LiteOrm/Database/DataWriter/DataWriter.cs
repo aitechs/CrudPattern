@@ -27,6 +27,8 @@ namespace AiTech.LiteOrm.Database
         protected string DataWriterUsername;
 
 
+
+
         protected virtual void OnAfterItemSave(EntityEventArgs item)
         {
             var handler = AfterItemSave;
@@ -43,11 +45,15 @@ namespace AiTech.LiteOrm.Database
             _List.Attach(item);
         }
 
+
+
         public DataWriter(string username, TEntityCollection items)
         {
             DataWriterUsername = username;
             _List = items;
         }
+
+
 
 
         protected abstract string CreateSqlInsertQuery();
@@ -82,11 +88,18 @@ namespace AiTech.LiteOrm.Database
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         protected string CreateSqlUpdateQuery(TEntity item)
         {
             var builder = new SqlUpdateQueryBuilder(item);
             return builder.GetQueryString();
         }
+
+
 
         protected virtual void CreateSqlUpdateCommandParameters(SqlCommand cmd, TEntity item)
         {
@@ -103,6 +116,8 @@ namespace AiTech.LiteOrm.Database
         }
 
 
+
+
         protected void UpdateItemRecordInfo(TEntity item, SqlDataReader reader)
         {
             if (!reader.Read()) throw new Exception("Error Inserting New Item");
@@ -117,6 +132,13 @@ namespace AiTech.LiteOrm.Database
 
 
 
+        /// <summary>
+        /// Write changes to the database
+        /// </summary>
+        /// <param name="ErrorDescription"></param>
+        /// <param name="db"></param>
+        /// <param name="trn"></param>
+        /// <returns></returns>
         protected bool Write(Expression<Func<TEntity, string>> ErrorDescription, SqlConnection db, SqlTransaction trn)
         {
             var affectedRecords = 0;

@@ -32,6 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DocumentationFile>..\..\_Output\Release\AiTech.LiteOrm.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -60,6 +61,8 @@
     <Compile Include="Database\DataWriter\SqlDataWriter.cs" />
     <Compile Include="Database\DataWriter\SqlMainDataWriter.cs" />
     <Compile Include="Database\DataWriter\SqlUpdateQueryBuilder.cs" />
+    <Compile Include="Database\Search\Enums.cs" />
+    <Compile Include="Database\Search\Search.cs" />
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Entity\EntityCollection.cs" />
     <Compile Include="Entity\EntityGenerator\ST4bby.Config1.cs" />
@@ -69,6 +72,10 @@
     <Compile Include="Encryption\SimpleAES.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="credentials.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>credentials.xml.sample</LastGenOutput>
+    </Content>
     <Content Include="Database\_DatabaseTools\TextTemplate1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </Content>
@@ -88,6 +95,11 @@
     <Content Include="Entity\EntityGenerator\TextTemplate1.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="credentials.xml.sample">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>credentials.tt</DependentUpon>
+    </None>
     <None Include="Database\_DatabaseTools\TableGenerator.Config.ttinclude" />
     <None Include="Entity\EntityGenerator\ST4bby.Config.ttinclude" />
     <None Include="packages.config" />

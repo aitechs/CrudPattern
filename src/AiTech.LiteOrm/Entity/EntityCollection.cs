@@ -110,7 +110,7 @@ namespace AiTech.LiteOrm
 
 
         /// <summary>
-        /// Call this Method right after LoadItemsFromDb to Transfer data to ItemCollection
+        /// Load items to collection setting each item rowstatus = NoChanges and StartTrackingChanges
         /// </summary>
         /// <param name="items"></param>
         protected internal void LoadItemsWith(IEnumerable<TEntityName> items)

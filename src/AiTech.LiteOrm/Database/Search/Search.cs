@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using System;
 using System.Collections.Generic;
 
 
@@ -17,7 +18,10 @@ namespace AiTech.LiteOrm.Database.Search
         /// <returns></returns>
         public static IEnumerable<T> SearchData<T>(string searchString, string query, SearchStyleEnum searchStyle)
         {
-            using (var db = Database.Connection.CreateConnection())
+
+            if (!query.Contains("@Criteria")) throw new Exception("query does not contain parameter word '@Criteria'");
+
+            using (var db = Connection.CreateConnection())
             {
                 db.Open();
 

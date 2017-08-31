@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,6 +8,9 @@ using System.Linq.Expressions;
 namespace AiTech.LiteOrm.Database
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class EntityEventArgs : EventArgs
     {
         public Entity ItemData { get; set; }
@@ -15,6 +19,11 @@ namespace AiTech.LiteOrm.Database
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TEntityCollection"></typeparam>
     public abstract class DataWriter<TEntity, TEntityCollection>
         where TEntity : Entity
         where TEntityCollection : EntityCollection<TEntity>, new()
@@ -146,10 +155,11 @@ namespace AiTech.LiteOrm.Database
             // Delete All Marked Items
             var deletedItems = _List.Items.Where(_ => _.RowStatus == RecordStatus.DeletedRecord);
 
-            if (deletedItems.Any())
+            var enumerable = deletedItems as IList<TEntity> ?? deletedItems.ToList();
+            if (enumerable.Any())
             {
-                if (DatabaseAction.ExecuteDeleteQuery<TEntity>(DataWriterUsername, deletedItems, db, trn))
-                    affectedRecords += deletedItems.Count();
+                if (DatabaseAction.ExecuteDeleteQuery<TEntity>(DataWriterUsername, enumerable, db, trn))
+                    affectedRecords += enumerable.Count();
             }
 
 
@@ -161,7 +171,8 @@ namespace AiTech.LiteOrm.Database
 
                 switch (item.RowStatus)
                 {
-                    case RecordStatus.DeletedRecord: continue;
+                    case RecordStatus.DeletedRecord:
+                        continue;
 
                     case RecordStatus.NewRecord:
                         cmd = CreateInsertCommand(db, trn, item);

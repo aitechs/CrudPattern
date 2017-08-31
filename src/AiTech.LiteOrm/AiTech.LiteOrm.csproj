@@ -63,6 +63,7 @@
     <Compile Include="Database\DataWriter\SqlUpdateQueryBuilder.cs" />
     <Compile Include="Database\Search\Enums.cs" />
     <Compile Include="Database\Search\Search.cs" />
+    <Compile Include="EntityMapper.cs" />
     <Compile Include="Entity\Entity.cs" />
     <Compile Include="Entity\EntityCollection.cs" />
     <Compile Include="Entity\EntityGenerator\ST4bby.Config1.cs" />

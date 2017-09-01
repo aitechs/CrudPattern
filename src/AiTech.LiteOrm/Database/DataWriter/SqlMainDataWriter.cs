@@ -54,11 +54,11 @@ namespace AiTech.LiteOrm.Database
                     CommitChanges();
                     return success;
                 }
-                catch
+                catch (Exception ex)
                 {
                     trn.Rollback();
                     RollbackChanges();
-                    throw;
+                    throw new Exception("Write to Database Error", ex);
                 }
             }
 

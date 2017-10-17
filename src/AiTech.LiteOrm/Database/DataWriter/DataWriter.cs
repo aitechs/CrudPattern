@@ -31,8 +31,16 @@ namespace AiTech.LiteOrm.Database
         public event EventHandler<EntityEventArgs> AfterItemSave;
         public event EventHandler<EntityEventArgs> ErrorOccured;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         protected TEntityCollection _List;
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         protected string DataWriterUsername;
 
 
@@ -118,7 +126,13 @@ namespace AiTech.LiteOrm.Database
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="item"></param>
+        /// <param name="errorDescription"></param>
+        /// <returns></returns>
         protected bool ExecuteCommand(SqlCommand cmd, TEntity item, string errorDescription)
         {
             return DatabaseAction.ExecuteCommand<TEntity>(cmd, item, errorDescription);
@@ -126,7 +140,11 @@ namespace AiTech.LiteOrm.Database
 
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="reader"></param>
         protected void UpdateItemRecordInfo(TEntity item, SqlDataReader reader)
         {
             if (!reader.Read()) throw new Exception("Error Inserting New Item");

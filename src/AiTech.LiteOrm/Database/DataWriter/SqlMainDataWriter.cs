@@ -7,27 +7,51 @@ namespace AiTech.LiteOrm.Database
         where TEntity : Entity
         where TEntityCollection : EntityCollection<TEntity>, new()
     {
+
+
+        public event EventHandler<EntityEventArgs> AfterRollbackChanges;
+
+
         public SqlMainDataWriter(string username, TEntity item) : base(username, item) { }
+
         public SqlMainDataWriter(string username, TEntityCollection items) : base(username, items) { }
 
 
 
-
+        /// <summary>
+        /// Commit the Changes  in the class
+        /// </summary>
         protected virtual void CommitChanges()
         {
             _List.CommitChanges();
         }
 
+
+        /// <summary>
+        /// Rollback Changes in the class
+        /// </summary>
         protected virtual void RollbackChanges()
         {
             _List.RollbackChanges();
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public virtual bool SaveChanges()
         {
             return Write(_ => "item");
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ErrorDescription"></param>
+        /// <returns></returns>
         protected bool Write(Expression<Func<TEntity, string>> ErrorDescription)
         {
             using (var db = Connection.CreateConnection())
@@ -63,6 +87,7 @@ namespace AiTech.LiteOrm.Database
             }
 
         }
+
 
     }
 

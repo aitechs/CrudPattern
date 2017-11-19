@@ -8,7 +8,7 @@ namespace AiTech.LiteOrm.Database
         where TEntityCollection : EntityCollection<TEntity>, new()
     {
 
-
+        public event EventHandler<TEntityCollection> AfterCommit;
         public event EventHandler<EntityEventArgs> AfterRollbackChanges;
 
 
@@ -18,12 +18,20 @@ namespace AiTech.LiteOrm.Database
 
 
 
+        protected virtual void OnAfterCommit(TEntityCollection items)
+        {
+            var handler = AfterCommit;
+            handler?.Invoke(this, items);
+        }
+
         /// <summary>
         /// Commit the Changes  in the class
         /// </summary>
         protected virtual void CommitChanges()
         {
             _List.CommitChanges();
+
+            OnAfterCommit(_List);
         }
 
 
@@ -54,19 +62,8 @@ namespace AiTech.LiteOrm.Database
         /// <returns></returns>
         protected bool Write(Expression<Func<TEntity, string>> ErrorDescription)
         {
-            using (var db = Connection.CreateConnection())
+            using (var db = Connection.CreateAndOpenConnection())
             {
-                try
-                {
-
-                    db.Open();
-
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException("Can not establish connection to server", ex);
-                }
-
                 var trn = db.BeginTransaction();
                 try
                 {
@@ -76,6 +73,7 @@ namespace AiTech.LiteOrm.Database
                     trn.Commit();
 
                     CommitChanges();
+
                     return success;
                 }
                 catch (Exception ex)

@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <UseVSHostingProcess>false</UseVSHostingProcess>
-    <DocumentationFile>..\..\_Output\Release\AiTech.LiteOrm.XML</DocumentationFile>
+    <DocumentationFile>..\..\_Output\Release\AiTech.LiteOrm.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -61,6 +61,7 @@
     <Compile Include="Database\DataWriter\SqlDataWriter.cs" />
     <Compile Include="Database\DataWriter\SqlMainDataWriter.cs" />
     <Compile Include="Database\DataWriter\SqlUpdateQueryBuilder.cs" />
+    <Compile Include="Database\Exceptions\ConnectionException.cs" />
     <Compile Include="Database\Search\Enums.cs" />
     <Compile Include="Database\Search\Search.cs" />
     <Compile Include="EntityMapper.cs" />

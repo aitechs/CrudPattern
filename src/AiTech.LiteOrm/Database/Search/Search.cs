@@ -21,10 +21,8 @@ namespace AiTech.LiteOrm.Database.Search
 
             if (!query.Contains("@Criteria")) throw new Exception("query does not contain parameter word '@Criteria'");
 
-            using (var db = Connection.CreateConnection())
+            using (var db = Connection.CreateAndOpenConnection())
             {
-                db.Open();
-
                 var criteria = "";
                 switch (searchStyle)
                 {

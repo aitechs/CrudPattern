@@ -29,6 +29,7 @@ namespace AiTech.LiteOrm.Database
         where TEntityCollection : EntityCollection<TEntity>, new()
     {
         public event EventHandler<EntityEventArgs> AfterItemSave;
+
         public event EventHandler<EntityEventArgs> ErrorOccured;
 
 
@@ -42,8 +43,6 @@ namespace AiTech.LiteOrm.Database
         /// 
         /// </summary>
         protected string DataWriterUsername;
-
-
 
 
         protected virtual void OnAfterItemSave(EntityEventArgs item)

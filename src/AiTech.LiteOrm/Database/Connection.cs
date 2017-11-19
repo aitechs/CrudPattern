@@ -10,21 +10,13 @@ namespace AiTech.LiteOrm.Database
         public static DatabaseCredential MyDbCredential;
         private static bool CredentialIsLoaded;
 
-        private static void LoadCredential()
+        public static void LoadCredential()
         {
             var settings = new System.Xml.XmlDocument();
 
             if (!File.Exists("credentials.xml")) throw new FileNotFoundException("Credential File NOT Found!");
 
-            try
-            {
-                settings.Load("credentials.xml");
-
-            }
-            catch
-            {
-                throw;
-            }
+            settings.Load("credentials.xml");
 
             var rootNode = settings.SelectSingleNode("Settings");
 
@@ -36,13 +28,18 @@ namespace AiTech.LiteOrm.Database
             MyDbCredential.Username = Password.Decrypt(node.Attributes["Username"].Value);
             MyDbCredential.Password = Password.Decrypt(node.Attributes["Password"].Value);
 
-            MyDbCredential.IntegratedSecurity = node.Attributes["IntegratedSecurity"].Value == "true" ? true : false;
+            //var isec = node.Attributes["IntegratedSecurity"];
+
+            MyDbCredential.IntegratedSecurity = node.Attributes["IntegratedSecurity"]?.Value == "true" ? true : false;
 
             CredentialIsLoaded = true;
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public static SqlConnection CreateConnection()
         {
             //System.Threading.Thread.Sleep(2000);
@@ -64,6 +61,24 @@ namespace AiTech.LiteOrm.Database
             };
 
             return new SqlConnection(builder.ToString());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public static SqlConnection CreateAndOpenConnection()
+        {
+            var db = CreateConnection();
+            try
+            {
+                db.Open();
+
+            } catch(Exception ex)
+            {
+                throw new IOException("Can NOT connect to the server", ex);
+            }
+            return db;
         }
 
     }
